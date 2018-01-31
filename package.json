@@ -16,9 +16,12 @@
     "body-parser": "^1.18.2",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
+    "glob": "^7.1.2",
+    "jsonwebtoken": "^8.1.1",
     "mongoose": "^5.0.2"
   },
   "devDependencies": {
+    "morgan": "^1.9.0",
     "nodemon": "^1.14.11"
   }
 }

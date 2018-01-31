@@ -1,7 +1,7 @@
-const server = require('./server');
+const server = require('./server.config');
 
 const config = {
-    boot: server.boot
+    setupApp: server.bootApp
 };
 
 module.exports = config;

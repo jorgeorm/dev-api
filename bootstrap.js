@@ -2,4 +2,4 @@
 
 const config = require('./src/config');
 
-const app = config.boot();
+const app = config.setupApp();
