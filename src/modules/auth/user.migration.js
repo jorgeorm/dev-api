@@ -6,7 +6,7 @@ const User = require('./user.model');
 
 const BASE_ADMIN = {
     email: 'jorgeorm@gmail.com',
-    passwd: strHelpers.randomStr(5),
+    password: strHelpers.randomStr(5),
     role: ADMIN
 };
 
@@ -17,18 +17,21 @@ class UserMigration {
         this.sampleData = sampleData;
     }
 
-    async up() {
-        const adminUser = new User(BASE_ADMIN);
-
-        console.log('Password: ', BASE_ADMIN.passwd);
-
-        return await User.findOneAndUpdate({
+    up() {
+        const adminQuery = {
             email: BASE_ADMIN.email
-        }, BASE_ADMIN, { upsert: true, new: true, setDefaultsOnInsert: true });
+        };
+
+        console.log('BASE_ADMIN', BASE_ADMIN);
+
+        return User.create([BASE_ADMIN])
+            .then((res) => {
+                return Promise.resolve(res);
+            });
     }
 
-    async down(err) {
-        return await User.collection.drop()
+    down(err) {
+        return User.collection.drop()
             .then(() => {
                 return Promise.resolve(err);
             })

@@ -53,7 +53,6 @@ async function migrate() {
         glob(globPath, (err, matches) => {
 
             if(err) {
-                console.error(err);
                 resolve([]);
             }
 
