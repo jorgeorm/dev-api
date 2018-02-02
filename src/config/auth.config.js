@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'superSecret123';
-const BCRYPT_SALT = process.env.BCRYPT_SALT || 10;
+const BCRYPT_SALT = Number(process.env.BCRYPT_SALT) || 10;
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '7 days';
 
 /**

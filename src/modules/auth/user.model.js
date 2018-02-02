@@ -25,28 +25,45 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre('save', function (next) {
-    const user = this;
-    const saltRounds = BCRYPT_SALT; // Salt to hash
-
+async function cleanData(user) {
     user.email = user.email.toLowerCase(); // Guarantees emails are stored in lowercase
     
     // only hash the password if it has been modified (or is new)
-    if (!user.isModified('password')) return next();
+    if (!user.isModified('password')) return;
 
-    // generate a salt
+    const salt = await bcrypt.genSalt(BCRYPT_SALT); // Generates salt
+    const hash = await bcrypt.hash(user.password, salt); // Generates Hash from password
 
-    bcrypt.genSalt(saltRounds)
-        .then((salt) => {
-            return bcrypt.hash(user.password, salt) // hash the password
+    user.password = hash;
+
+    return user;
+}
+
+// Before save hook
+userSchema.pre('save', function (next) {// Can't use arrow functions
+    const user = this;
+
+    cleanData(user)
+        .then(() => {
+            next();
         })
-        .then((hash) => { 
-            user.password = hash; // override the cleartext password
+        .catch((err) => {
+            console.error(err);
+            next(err);
+        });
+});
+
+// Before findAndUpdate
+userSchema.pre('findAndUpdate', function (next) {// Can't use arrow functions
+    const user = this;
+
+    cleanData(user)
+        .then(() => {
             next();
         })
         .catch((err) => {
             next(err);
-        })
+        });
 });
 
 /**
