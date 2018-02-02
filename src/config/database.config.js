@@ -2,6 +2,12 @@
 
 const mongoose = require('mongoose');
 
+const {
+    DB_HOST,
+    DB_NAME,
+    DB_PASSWD,
+    DB_USER
+} = require('./config.constants');
 
 /**
  * Setup the database connection
@@ -11,12 +17,8 @@ const mongoose = require('mongoose');
  */
 exports.setupDatabase = ({env} = {}) => {
     // DATABASE STUFF
-    const dbHost = env.DB_HOST || 'localhost';
-    const dbName = env.DB_NAME || 'dev-api';
-    const dbPasswd = env.DB_PASSWD || 'dev';
-    const dbUser = env.DB_USER || 'dev';
-
-    const dbURI = `mongodb://${dbUser}:${dbPasswd}@${dbHost}/${dbName}`;
+    
+    const dbURI = `mongodb://${DB_USER}:${DB_PASSWD}@${DB_HOST}/${DB_NAME}`;
 
     return mongoose.connect(dbURI)
         .then(() => {

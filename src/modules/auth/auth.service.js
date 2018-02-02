@@ -9,7 +9,7 @@ const User = require('./user.model');
  * @param {string} cred.email - Email
  * @param {string} cred.password - Password
  */
-exports.jwtLogin = async ({email, password} = {}, app) => {
+exports.jwtLogin = async function ({email, password} = {}, app) {
     const signConfg = {
         expiresIn: app.get('jwtExpiration')
     };
@@ -27,11 +27,15 @@ exports.jwtLogin = async ({email, password} = {}, app) => {
     const passMatch = await user.comparePassword(password);
 
     if(!passMatch) return undefined;
+
+    const userPayload = {
+        id: user._id,
+        role: user.role
+    };
     
-    return jwt.sign({role: user.role}, app.get('jwtSecret'), signConfg);
+    return jwt.sign(userPayload, app.get('jwtSecret'), signConfg);
 };
 
-exports.signup = async ({email, password}) => {
-
+exports.signup = async function ({email, password}) {
 
 };

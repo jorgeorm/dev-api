@@ -1,7 +1,11 @@
 const express = require('express');
+const {
+    UNAUTHORIZED,
+    INTERNAL_SERVER_ERROR
+} = require('http-status-codes');
 const router = express.Router();
 
-const auth = require('../../modules/auth').authService;
+const authService = require('../../modules/auth/auth.service');
 
 const {
     AUTH_ERROR,
@@ -11,15 +15,16 @@ const {
 router.post('/login', (req, res) => {
     const creds = req.body;
 
-    auth.jwtLogin(creds, req.app)
+    authService.jwtLogin(creds, req.app)
         .then((token) => {
-            if(!token) return res.json({success: false, message: AUTH_ERROR});
+            if(!token) return res.status(UNAUTHORIZED)
+                .json({success: false, message: AUTH_ERROR});
 
             res.json({success: true, token: token});
         })
         .catch((err) => {
-            console.error(err);
-            res.json({success: false, message: AUTH_EXCEPTION});
+            res.status(INTERNAL_SERVER_ERROR)
+                .json({success: false, message: AUTH_EXCEPTION});
         });
 });
 

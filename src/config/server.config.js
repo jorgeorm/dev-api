@@ -1,12 +1,12 @@
 'use strict';
 const bodyParser = require('body-parser');
-const dotEnv = require('dotenv');
 const express = require('express');        // call express
 
 
 const api = require('../api');
-const dbConfig = require('./database.config');
 const authConfig = require('./auth.config');
+const dbConfig = require('./database.config');
+const configConstants = require('./config.constants');
 
 /**
  * Will contain server related vars
@@ -14,11 +14,9 @@ const authConfig = require('./auth.config');
 const SERVER = {};
 
 exports.bootApp = ({envOptions} = {}) => {
-    dotEnv.config(envOptions);
-
     // Alias for the express app
     const app = SERVER.app = express();
-    SERVER.env = process.env;
+    SERVER.env = configConstants;
 
     authConfig.setupAuth(SERVER);
     dbConfig.setupDatabase(SERVER);
