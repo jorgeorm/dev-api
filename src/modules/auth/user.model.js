@@ -13,12 +13,17 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
+        index: true,
+        required: true,
         validate: [(email) => {
             const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             return emailReg.test(email);
         }, 'Please provide a valid email address'],
     },
-    password: String,
+    password: {
+        type: String,
+        required: true
+    },
     role: {
         type: String,
         enum: [ADMIN, MANAGER, USER]

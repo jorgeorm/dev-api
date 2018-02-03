@@ -5,9 +5,10 @@ const User = require('./user.model');
 
 /**
  * 
- * @param {object} cred
- * @param {string} cred.email - Email
- * @param {string} cred.password - Password
+ * @param {Object} cred
+ * @param {String} cred.email - Email
+ * @param {String} cred.password - Password
+ * @param {Express} app
  */
 exports.jwtLogin = async function ({email, password} = {}, app) {
     const signConfg = {
@@ -36,6 +37,12 @@ exports.jwtLogin = async function ({email, password} = {}, app) {
     return jwt.sign(userPayload, app.get('jwtSecret'), signConfg);
 };
 
+/**
+ * 
+ * @param {Object} creds
+ * @param {String} creds.email
+ * @param {String} creds.password 
+ */
 exports.signup = async function ({email, password}) {
 
 };

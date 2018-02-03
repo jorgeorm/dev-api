@@ -28,6 +28,17 @@ exports.seed = async function (files) {
         const {Model, data} = require(seedFile);
         const collection = Model.collection.collectionName;
 
+        if(data instanceof Promise) return data
+            .then((_data) => {
+                return Model.create(_data);
+            })
+            .then((object) => {
+                return Promise.resolve({collection, _data});
+            })
+            .catch((err) => {
+                return Promise.resolve(err);
+            });
+
         return Model.create(data)
             .then((object) => {
                 return Promise.resolve({collection, data});

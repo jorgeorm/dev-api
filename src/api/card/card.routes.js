@@ -6,7 +6,7 @@ const router = express.Router();
 
 const notImp = function (req, res) {
     res.status(NOT_IMPLEMENTED)
-        .json({});
+        .json({message: 'Not implemented'});
 };
 
 router.post('/', notImp);
