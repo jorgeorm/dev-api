@@ -4,34 +4,43 @@ const lorem = require('lorem-ipsum');
 const Card = require('./card.model');
 const User = require('../auth/user.model');
 const BASE_ADMIN = require('../auth/user.seed').data;
+const {
+    EPIC,
+    STORY,
+    TASK
+} = require('./cardTypes.constants');
 
 async function prepareData() {
     const staticData = {};
     const user = await User.findOne({email: BASE_ADMIN.email});
     const data = [];
+    const cardTypes = [EPIC, STORY, TASK];
 
-    for(let i = 0; i < 5; i++) {
-        let dataTmp = {};
-        const randomComments = Math.floor(Math.random()*10);
-        const randomPriority = Math.floor(Math.random()*100);
+    let cardData, comments, randomPriority;
+    let i, j;
 
-        dataTmp.title = lorem({count: 1, units: 'sentences', format: 'plain'});
-        dataTmp.desc = lorem({count: 4, units: 'sentences', format: 'plain', paragraphLowerBound: 2})
-        dataTmp.estimate = Math.floor(Math.random()*100);
-        dataTmp.cardType = "Card",
-        dataTmp.reporter = user;
+    for(i = 0; i < 5; i++) {
+        cardData = {};
+        comments = Math.floor(Math.random()*10);
 
-        if(randomComments > 0) dataTmp.comments = [];
+        cardData.title = lorem({count: 1, units: 'sentences', format: 'plain'});
+        cardData.desc = lorem({count: 4, units: 'sentences', format: 'plain', paragraphLowerBound: 2})
+        cardData.estimate = Math.floor(Math.random()*100);
+        cardData.cardType = cardTypes[Math.floor(Math.random()*cardTypes.length)],
+        cardData.reporter = user;
+        cardData.priority = Math.floor(Math.random()*100);
 
-        for(let j = 0; j < randomComments; j++) {
-            dataTmp.comments.push({
+        if(comments > 0) cardData.comments = [];
+
+        for(j = 0; j < comments; j++) {
+            cardData.comments.push({
                 comment: lorem({count: 2, units: 'sentences', format: 'plain', paragraphLowerBound: 2}),
                 creationDate: new Date(),
                 author: user
             });
         }
 
-        data.push(dataTmp);
+        data.push(cardData);
     }
 
 

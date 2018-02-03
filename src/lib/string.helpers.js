@@ -1,7 +1,7 @@
 /**
  * 
  */
-exports.randomStr = (length) => {
+exports.randomStr = function (length) {
     let str = "";
     const strBase = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 

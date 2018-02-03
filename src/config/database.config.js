@@ -22,12 +22,12 @@ exports.setupDatabase = ({env} = {}) => {
 
     return mongoose.connect(dbURI)
         .then(() => {
-            console.log('DB_CONNECTION_STATUS: Connected');
+            console.log('=== DB_CONNECTION_STATUS: Connected');
             return Promise.resolve();
         })
         .catch((err) => {
-            console.error('DB_CONNECTION_STATUS: Error');
-            console.error('DB_ERROR: ', err);
+            console.error('=== DB_CONNECTION_STATUS: Error');
+            console.error('=== DB_ERROR: ', err);
             return Promise.reject(err);
         });
 };

@@ -1,4 +1,3 @@
-
 const glob = require('glob');
 
 /**
@@ -14,39 +13,26 @@ exports.loadFiles = function (globExp) {
             resolve(files);
         })
     });
-}
+};
 
 /**
  * Migrates a list of migration file classes, all classes must have up and down method
  * @param {String[]} files List of migration files
  */
-exports.seed = async function (files) {
+exports.seed = function (files) {
     /**
      * @type {Promise[]}
      */
-    const seedPromises = files.map((seedFile) => {
-        const {Model, data} = require(seedFile);
+    const seedPromises = files.map(async(seedFile) => {
+        let {Model, data} = require(seedFile);
         const collection = Model.collection.collectionName;
 
-        if(data instanceof Promise) return data
-            .then((_data) => {
-                return Model.create(_data);
-            })
-            .then((object) => {
-                return Promise.resolve({collection, _data});
-            })
-            .catch((err) => {
-                return Promise.resolve(err);
-            });
+        data = data instanceof Promise ? await data : data;
 
-        return Model.create(data)
-            .then((object) => {
-                return Promise.resolve({collection, data});
-            })
-            .catch((err) => {
-                return Promise.resolve(err);
-            });
+        await Model.create(data);
+
+        return {collection, data};
     });
 
     return Promise.all(seedPromises);
-}
+};
