@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // TODO: Put status as required
 
-const cardSchema = new mongoose.Schema({
+const cardSchema = new Schema({
     title: {
         type: String,
         required: true,
@@ -17,30 +17,30 @@ const cardSchema = new mongoose.Schema({
     },
     cardType: {type: String, required: true},
     status: {
-        type: Schema.Types.ObjectId, ref: "States",
+        type: Schema.Types.ObjectId, ref: 'States',
     },
     reporter: {
-        type: [{type: Schema.Types.ObjectId, ref: "User" }],
+        type: [{type: Schema.Types.ObjectId, ref: 'User' }],
         required: true
     },
-    asignees: [{type: Schema.Types.ObjectId, ref: "User" }],
-    followers: [{type: Schema.Types.ObjectId, ref: "User" }],
+    asignees: [{type: Schema.Types.ObjectId, ref: 'User' }],
+    followers: [{type: Schema.Types.ObjectId, ref: 'User' }],
     relations: {
-        blockedBy: [{type: Schema.Types.ObjectId, ref: "Card" }],
-        blocks: [{type: Schema.Types.ObjectId, ref: "Card" }],
-        generatedBy: [{type: Schema.Types.ObjectId, ref: "Card" }]
+        blockedBy: [{type: Schema.Types.ObjectId, ref: 'Card' }],
+        blocks: [{type: Schema.Types.ObjectId, ref: 'Card' }],
+        generatedBy: [{type: Schema.Types.ObjectId, ref: 'Card' }]
     },
     comments: [{
         comment: {type: String, required: true},
         creationDate: {type: Date, required: true},
         author: {
             type: Schema.Types.ObjectId,
-            ref: "User",
+            ref: 'User',
             required: true
         },
-        followers: [{type: Schema.Types.ObjectId, ref: "User"}]
+        followers: [{type: Schema.Types.ObjectId, ref: 'User'}]
     }],
-    priority: "Number"
+    priority: Number
 });
 
 module.exports = mongoose.model('Card', cardSchema);

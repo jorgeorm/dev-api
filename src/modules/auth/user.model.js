@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const {BCRYPT_SALT} = require('../../config/auth.config');
 
@@ -9,7 +10,7 @@ const {
     USER
 } = require('./roles.constants');
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     email: {
         type: String,
         unique: true,

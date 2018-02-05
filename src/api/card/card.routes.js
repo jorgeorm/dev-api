@@ -1,22 +1,21 @@
 const express = require('express');
-const {
-    NOT_IMPLEMENTED
-} = require('http-status-codes');
 const router = express.Router();
 
-const notImp = function (req, res) {
-    res.status(NOT_IMPLEMENTED)
-        .json({message: 'Not implemented'});
-};
+const {notImplemented} = require('../shared/utils.middlewares');
 
-router.post('/', notImp);
+/**
+ * @swagger
+ * resourcePath: /api/card
+ * description: Manages cards
+ */
+router.post('/', notImplemented);
 
-router.get('/', notImp);
+router.get('/', notImplemented);
 
-router.get('/:cardId', notImp)
+router.get('/:cardId', notImplemented)
 
-router.put('/:cardId', notImp)
+router.put('/:cardId', notImplemented)
 
-router.delete('/:cardId', notImp);
+router.delete('/:cardId', notImplemented);
 
 module.exports = router;
