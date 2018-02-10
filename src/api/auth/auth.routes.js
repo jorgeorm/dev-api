@@ -12,8 +12,8 @@ const {
     AUTH_EXCEPTION
 } = require('./auth.constants');
 
-router.post('/login', (req, res) => {
-    const creds = req.body;
+router.post('/', (req, res) => {
+    const creds = req.body.data;
 
     authService.jwtLogin(creds, req.app)
         .then((token) => {
