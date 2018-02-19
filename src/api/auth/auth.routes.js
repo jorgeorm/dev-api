@@ -13,7 +13,7 @@ const {
 } = require('./auth.constants');
 
 router.post('/', (req, res) => {
-    const creds = req.body.data;
+    const creds = req.body;
 
     authService.jwtLogin(creds, req.app)
         .then((token) => {
