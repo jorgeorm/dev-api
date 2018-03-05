@@ -7,6 +7,8 @@ const adminPass = process.env.ADMIN_PASSWORD || strHelpers.randomStr(5);
 const BASE_ADMIN = {
     email: 'jorgeorm@gmail.com',
     password: adminPass,
+    firstname: 'Jorge',
+    lastname: 'Ordoñez Mendez',
     role: ADMIN
 };
 

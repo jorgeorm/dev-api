@@ -20,7 +20,7 @@ exports.jwtLogin = async function ({email, password} = {}, app) {
             if(err) return reject(err);
 
             resolve(user);
-        })
+        }).select("+password")
     });
 
     if(!user) return undefined;
@@ -35,6 +35,25 @@ exports.jwtLogin = async function ({email, password} = {}, app) {
     };
     
     return jwt.sign(userPayload, app.get('jwtSecret'), signConfg);
+};
+
+/**
+ * Obtains user's data from an a Authorization token
+ * @param {Object} payload - User payload used to sign the token
+ * @return {Promise<User>}
+ */
+exports.currentUser = async function ({ id }, ) {
+    const user = await new Promise((resolve, reject) => {
+        User.findById(id, (err, user) => {
+            if(err) return reject(err);
+
+            resolve(user);
+        });
+    });
+
+    if(!user) return undefined;
+
+    return user;
 };
 
 /**

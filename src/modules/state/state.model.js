@@ -1,20 +1,14 @@
-const mongoose = requrie('mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const stateSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        index: true,
     },
-    transitions: [{
-        name: {
-            type: String,
-            required: true
-        },
-        state: {
-            type: Schema.Types.ObjectId, ref: 'State'
-        }
-    }]
+    description: String,
 });
 
 module.exports = mongoose.model('State', stateSchema);

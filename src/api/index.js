@@ -16,7 +16,7 @@ router.use(function(req, res, next) {
     const method = req.method && req.method.toUpperCase && req.method.toUpperCase();
 
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     
     if(method === 'OPTIONS') {
         res.header('Vary', 'Access-Control-Request-Headers');

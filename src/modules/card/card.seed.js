@@ -11,7 +11,6 @@ const {
 } = require('./cardTypes.constants');
 
 async function prepareData() {
-    const staticData = {};
     const user = await User.findOne({email: BASE_ADMIN.email});
     const data = [];
     const cardTypes = [EPIC, STORY, TASK];

@@ -21,9 +21,18 @@ const userSchema = new Schema({
             return emailReg.test(email);
         }, 'Please provide a valid email address'],
     },
-    password: {
+    firstname: {
         type: String,
         required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true,
+        select: false
     },
     role: {
         type: String,
@@ -82,5 +91,12 @@ userSchema.methods.comparePassword = function (testPass) {
 
     return bcrypt.compare(testPass, user.password);
 };
+
+/**
+ * Computed property to get the fullName
+ */
+userSchema.virtual('fullName').get(function() {
+    return `${this.firstname} ${this.lastname}`;
+});
 
 module.exports = mongoose.model('User', userSchema);

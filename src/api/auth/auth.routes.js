@@ -6,11 +6,17 @@ const {
 const router = express.Router();
 
 const authService = require('../../modules/auth/auth.service');
+const authMiddlewares = require('./auth.middlewares');
 
 const {
     AUTH_ERROR,
     AUTH_EXCEPTION
 } = require('./auth.constants');
+
+const authFlow = [
+    authMiddlewares.jwt,
+    authMiddlewares.requireLogin
+];
 
 router.post('/', (req, res) => {
     const creds = req.body;
@@ -23,6 +29,18 @@ router.post('/', (req, res) => {
             res.json({success: true, token: token});
         })
         .catch((err) => {
+            res.status(INTERNAL_SERVER_ERROR)
+                .json({success: false, message: AUTH_EXCEPTION});
+        });
+});
+
+router.post('/user', authFlow, (req, res) => {
+    authService.currentUser(req.userPayload)
+        .then((user) => {
+            res.json({success: true, user});
+        })
+        .catch((err) => {
+            console.error(err);
             res.status(INTERNAL_SERVER_ERROR)
                 .json({success: false, message: AUTH_EXCEPTION});
         });
