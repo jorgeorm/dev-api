@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongoose').SchemaTypes;
 const Board = require('./board.model');
 const State = require('../state/state.model');
 const User = require('../auth/user.model');
@@ -7,15 +8,19 @@ const statesData = require('../state/state.seed').data;
 
 async function prepareData() {
     const boardData = {
-        name: 'First board',
+        name: 'Sample board',
         transitions: [],
-        createdBy: undefined
+        createdBy: undefined,
+        createdAt: undefined,
     };
     const user = await User.findOne({email: userData.email});
-    const statesQueries = statesData.map((state) => {
-        return { $and: [{ name: state.name }, {description: state.description}] }
-    });
-    const states = await State.find({ $or: [...statesQueries] });
+    const statesToFind = await statesData;
+    const statesQ = statesToFind.map((state) => {
+        const { name, description } = state;
+        return { name, description };
+    })
+
+    const states = await State.find({ $or: [...statesQ] });
 
     boardData.createdBy = user;
     boardData.createdAt = new Date();
@@ -23,14 +28,14 @@ async function prepareData() {
     states.forEach((state, index) => {
         if (index > 0) {
             boardData.transitions.push({
-                from: state._id,
-                to: states[index - 1]._id
+                from: state,
+                to: states[index - 1]
             })
         }
         if (index < (states.length - 1)) {
             boardData.transitions.push({
-                from: state._id,
-                to: states[index + 1]._id
+                from: state,
+                to: states[index + 1]
             })
         }
     });

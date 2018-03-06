@@ -12,12 +12,17 @@ module.exports.Revisionable = function (target) {
     };
     target.createdBy = {
         type: SchemaTypes.ObjectId,
+        ref: 'User',
         required: true,
     };
     target.updatedBy = {
         type: SchemaTypes.ObjectId,
+        ref: 'User',
     };
     target.removedBy = {
-        type: SchemaTypes.ObjectId
+        type: SchemaTypes.ObjectId,
+        ref: 'User',
     };
+
+    return target;
 };

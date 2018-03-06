@@ -1,8 +1,11 @@
 'use strict';
 const lorem = require('lorem-ipsum');
 
+const Board = require('../board/board.model');
 const Card = require('./card.model');
 const User = require('../auth/user.model');
+
+const boardData = require('../board/board.seed').data;
 const BASE_ADMIN = require('../auth/user.seed').data;
 const {
     EPIC,
@@ -12,6 +15,8 @@ const {
 
 async function prepareData() {
     const user = await User.findOne({email: BASE_ADMIN.email});
+    const boardObj = await boardData;
+    const board = await Board.findOne({ name: boardObj.name });
     const data = [];
     const cardTypes = [EPIC, STORY, TASK];
 
@@ -28,6 +33,7 @@ async function prepareData() {
         cardData.cardType = cardTypes[Math.floor(Math.random()*cardTypes.length)],
         cardData.reporter = user;
         cardData.priority = Math.floor(Math.random()*100);
+        cardData.board = board;
 
         if(comments > 0) cardData.comments = [];
 

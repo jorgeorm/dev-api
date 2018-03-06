@@ -44,7 +44,8 @@ const cardSchema = new Schema({
     priority: Number,
     board: {
         type: SchemaTypes.ObjectId,
-        required: true
+        required: true,
+        ref: 'Board'
     }
 });
 
