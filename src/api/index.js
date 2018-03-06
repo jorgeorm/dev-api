@@ -3,6 +3,7 @@ const router = express.Router();
 
 const auth = require('./auth/auth.middlewares');
 const authRoutes = require('./auth/auth.routes');
+const boardRoutes = require('./board/board.routes');
 const cardRoutes = require('./card/card.routes');
 const {notImplemented} = require('./shared/utils.middlewares');
 const stateRoutes = require('./state/state.routes');
@@ -32,8 +33,7 @@ router.use(function(req, res, next) {
 router.use('/auth', authRoutes);
 router.use('/card', authFlow, cardRoutes);
 router.use('/state', authFlow, stateRoutes);
-router.use('/project', authFlow, notImplemented);
-router.use('/workflow', authFlow, notImplemented);
-router.use('/team', authFlow, notImplemented);
+router.use('/board', authFlow, boardRoutes);
+// router.use('/team', authFlow, notImplemented);
 
 module.exports = router;
