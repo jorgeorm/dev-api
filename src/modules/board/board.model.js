@@ -12,9 +12,11 @@ const boardSchema = new Schema(Revisionable({
         unique: true
     },
     transitions: [{
-        from: SchemaTypes.ObjectId,
-        to: SchemaTypes.ObjectId,
-    }]
+        from: { type: SchemaTypes.ObjectId, ref: 'State' },
+        to: { type: SchemaTypes.ObjectId, ref: 'State' },
+    }],
+    usedStates: [{ type: SchemaTypes.ObjectId, ref: 'State'}],
+    stateGroups: [{ name: String, states: [{ type: SchemaTypes.ObjectId, ref: 'State' }] }]
 }));
 
 module.exports = mongoose.model('Board', boardSchema);

@@ -3,13 +3,13 @@ const Schema = mongoose.Schema;
 
 const { Revisionable } = require('../shared/decorators');
 
-const stateSchema = new Schema(Revisionable({
+const stateSchema = Revisionable({
     name: {
         type: String,
         required: true,
         index: true,
     },
     description: String,
-}));
+});
 
-module.exports = mongoose.model('State', stateSchema);
+module.exports = mongoose.model('State', new Schema(stateSchema));

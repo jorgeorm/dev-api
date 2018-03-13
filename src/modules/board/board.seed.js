@@ -12,6 +12,7 @@ async function prepareData() {
         transitions: [],
         createdBy: undefined,
         createdAt: undefined,
+        usedStates: [],
     };
     const user = await User.findOne({email: userData.email});
     const statesToFind = await statesData;
@@ -38,6 +39,8 @@ async function prepareData() {
                 to: states[index + 1]
             })
         }
+
+        boardData.usedStates.push(state);
     });
 
     return boardData;
