@@ -1,5 +1,14 @@
 const jwt = require('jsonwebtoken');
-const { UNAUTHORIZED } = require("http-status-codes");
+const {
+    UNAUTHORIZED,
+    
+ } = require("http-status-codes");
+
+const {
+    AUTH_ERROR,
+    AUTH_EXCEPTION,
+    AUTH_EXPIRED
+} = require('./auth.constants');
 
 /**
  * 
@@ -15,7 +24,19 @@ exports.jwt = function (req, res, next) {
     if (!hasToken) return next();
 
     const token = req.headers.authorization.split(' ')[1];
-    req.userPayload = jwt.verify(token, req.app.get('jwtSecret'));
+    try {
+        req.userPayload = jwt.verify(token, req.app.get('jwtSecret'));
+    } catch (err) {
+        switch(err.name) {
+            case 'TokenExpiredError':
+                return res.status(UNAUTHORIZED)
+                    .json({success: false, message: AUTH_EXPIRED})
+                break;
+            default:
+                return res.status(UNAUTHORIZED)
+                    .json({success: false, message: AUTH_EXCEPTION});
+        }
+    }
 
     next();
 };
