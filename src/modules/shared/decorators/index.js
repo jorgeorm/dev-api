@@ -6,23 +6,23 @@ const SchemaTypes = mongoose.SchemaTypes;
  * @param {object} target 
  */
 module.exports.Revisionable = function (target) {
-    target.createdAt = {
-        type: SchemaTypes.Date,
-        required: true,
-    };
-    target.createdBy = {
-        type: SchemaTypes.ObjectId,
-        ref: 'User',
-        required: true,
-    };
-    target.updatedBy = {
-        type: SchemaTypes.ObjectId,
-        ref: 'User',
-    };
-    target.removedBy = {
-        type: SchemaTypes.ObjectId,
-        ref: 'User',
-    };
+  target.createdAt = {
+    type: SchemaTypes.Date,
+    required: true,
+  };
+  target.createdBy = {
+    type: SchemaTypes.ObjectId,
+    ref: 'User',
+    required: true,
+  };
+  target.updatedBy = {
+    type: SchemaTypes.ObjectId,
+    ref: 'User',
+  };
+  target.removedBy = {
+    type: SchemaTypes.ObjectId,
+    ref: 'User',
+  };
 
-    return target;
+  return target;
 };

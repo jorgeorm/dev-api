@@ -12,9 +12,9 @@ router.post('/', notImplemented);
 
 router.get('/', notImplemented);
 
-router.get('/:cardId', notImplemented)
+router.get('/:cardId', notImplemented);
 
-router.put('/:cardId', notImplemented)
+router.put('/:cardId', notImplemented);
 
 router.delete('/:cardId', notImplemented);
 

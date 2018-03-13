@@ -11,17 +11,16 @@ const boardsService = require('../../modules/board/board.service');
  * description: Manages Card States
  */
 router.get('/', function (req, res) {
-    const { id, role } = req.userPayload;
+  const { id, role } = req.userPayload;
     
-    boardsService.getBoards(id, role)
-        .then((boards) => {
-            res.json({ success: true, boards });
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status = INTERNAL_SERVER_ERROR;
-            res.json({ success: false, error: 'Boards couldn\'t be fetched' })
-        });
+  boardsService.getBoards(id, role)
+    .then((boards) => {
+      res.json({ success: true, boards });
+    })
+    .catch(() => {
+      res.status = INTERNAL_SERVER_ERROR;
+      res.json({ success: false, error: 'Boards couldn\'t be fetched' });
+    });
 });
 
 router.post('/', notImplemented);

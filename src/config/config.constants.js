@@ -14,11 +14,11 @@ const DB_PASSWD = env.DB_PASSWD || 'dev';
 const DB_USER = env.DB_USER || 'dev';
 
 module.exports = {
-    JWT_SECRET,
-    BCRYPT_SALT,
-    JWT_EXPIRATION,
-    DB_HOST,
-    DB_NAME,
-    DB_PASSWD,
-    DB_USER
+  JWT_SECRET,
+  BCRYPT_SALT,
+  JWT_EXPIRATION,
+  DB_HOST,
+  DB_NAME,
+  DB_PASSWD,
+  DB_USER
 };
