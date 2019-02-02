@@ -10,7 +10,7 @@ const JWT_EXPIRATION = env.JWT_EXPIRATION || '7 days';
 // DB VARS
 const DB_HOST = env.DB_HOST || 'localhost';
 const DB_NAME = env.DB_NAME || 'dev-api';
-const DB_PASSWD = env.DB_PASSWD || 'dev';
+const DB_PASSWORD = env.DB_PASSWORD || 'dev';
 const DB_USER = env.DB_USER || 'dev';
 
 module.exports = {
@@ -19,6 +19,6 @@ module.exports = {
   JWT_EXPIRATION,
   DB_HOST,
   DB_NAME,
-  DB_PASSWD,
+  DB_PASSWORD,
   DB_USER
 };

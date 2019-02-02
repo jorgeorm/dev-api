@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  #Database
+  db-mongo:
+    container_name: "dev-db"
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: dev-api
+      MONGO_INITDB_ROOT_PASSWORD: topsecret
+      MONGO_INITDB_DATABASE: devApiLocal
+    volumes:
+      - db-data:/data/db:rw
+      - ./init-mongo-db:/docker-entrypoint-initdb.d
+    ports:
+      - "27017:27017"
+  # App
+  app:
+    container_name: "dev-api"
+    restart: always
+    build: .
+    # Workaround for having live app code and node-modules for alpine intact
+    volumes:
+      - .:/usr/src/app
+      - node-modules:/usr/src/app/node_modules
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db-mongo
+
+volumes:
+  # Will persist database in container
+  db-data:
+  # Will persist and give priority to alpine node_modules install instead of local node_modules
+  node-modules:
