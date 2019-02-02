@@ -5,15 +5,15 @@ const dbConfig = require('./src/config/database.config');
 const seedHelper = require('./src/lib/seed.helpers');
 
 /*eslint no-console: "off"*/
-const name = process.argv[2];
-    
+const name = process.argv[2] || '*';
+
 dbConfig.setupDatabase(process)
   .then(() => {
     return seedHelper.loadFiles(`${__dirname}/src/**/${name}.seed.js`);
   })
   .then((files) => {
     console.log('--- SEEDING PROCESS START');
-    return seedHelper.seed(files); 
+    return seedHelper.seed(files);
   })
   .then((report) => {
     report.forEach((entry) => {

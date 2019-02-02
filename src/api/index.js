@@ -17,7 +17,7 @@ router.use(function(req, res, next) {
 
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    
+
   if(method === 'OPTIONS') {
     res.header('Vary', 'Access-Control-Request-Headers');
     res.statusCode = 204;
@@ -25,7 +25,7 @@ router.use(function(req, res, next) {
 
     return res.end();
   }
-    
+
   next();
 });
 

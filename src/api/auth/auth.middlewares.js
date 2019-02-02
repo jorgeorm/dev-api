@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const {
   UNAUTHORIZED,
-    
+
 } = require('http-status-codes');
 
 const {
@@ -10,10 +10,10 @@ const {
 } = require('./auth.constants');
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 exports.jwt = function (req, res, next) {
   const hasToken = req.headers &&
@@ -40,10 +40,10 @@ exports.jwt = function (req, res, next) {
 };
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 exports.requireLogin = function (req, res, next) {
   if(!req.userPayload) return res.status(UNAUTHORIZED)

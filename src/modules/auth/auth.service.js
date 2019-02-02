@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./user.model');
 
 /**
- * 
+ *
  * @param {Object} cred
  * @param {String} cred.email - Email
  * @param {String} cred.password - Password
@@ -33,7 +33,7 @@ exports.jwtLogin = async function ({email, password} = {}, app) {
     id: user._id,
     role: user.role
   };
-    
+
   return jwt.sign(userPayload, app.get('jwtSecret'), signConfg);
 };
 
@@ -57,10 +57,10 @@ exports.currentUser = async function ({ id }, ) {
 };
 
 /**
- * 
+ *
  * @param {Object} creds
  * @param {String} creds.email
- * @param {String} creds.password 
+ * @param {String} creds.password
  */
 exports.signup = async function ({email, password}) {
   throw new TypeError(`Sign Up not implemented ${{email, password}}`);

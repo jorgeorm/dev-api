@@ -24,7 +24,7 @@ const cardSchema = new Schema({
     type: [{type: SchemaTypes.ObjectId, ref: 'User' }],
     required: true
   },
-  asignees: [{type: SchemaTypes.ObjectId, ref: 'User' }],
+  assignees: [{type: SchemaTypes.ObjectId, ref: 'User' }],
   followers: [{type: SchemaTypes.ObjectId, ref: 'User' }],
   relations: {
     blockedBy: [{type: SchemaTypes.ObjectId, ref: 'Card' }],

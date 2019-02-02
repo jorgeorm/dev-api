@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 exports.randomStr = function (length) {
   let str = '';

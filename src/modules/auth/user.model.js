@@ -42,7 +42,7 @@ const userSchema = new Schema({
 
 async function cleanData(user) {
   user.email = user.email.toLowerCase(); // Guarantees emails are stored in lowercase
-    
+
   // only hash the password if it has been modified (or is new)
   if (!user.isModified('password')) return;
 

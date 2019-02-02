@@ -18,7 +18,7 @@ const {
  */
 exports.setupDatabase = () => {
   // DATABASE STUFF
-    
+
   const dbURI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`;
 
   return mongoose.connect(dbURI, { useNewUrlParser: true })
