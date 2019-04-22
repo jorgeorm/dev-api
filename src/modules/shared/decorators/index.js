@@ -5,7 +5,7 @@ const SchemaTypes = mongoose.SchemaTypes;
  * adds timestamp to a schema object
  * @param {object} target
  */
-module.exports.Revisionable = function (target) {
+module.exports.Revisionable = function revisionableDecorator(target) {
   target.createdAt = {
     type: SchemaTypes.Date,
     required: true,

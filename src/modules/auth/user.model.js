@@ -55,7 +55,7 @@ async function cleanData(user) {
 }
 
 // Before save hook
-userSchema.pre('save', function (next) {// Can't use arrow functions
+userSchema.pre('save', function preUserSave(next) {// Can't use arrow functions
   const user = this;
 
   cleanData(user)
@@ -68,7 +68,7 @@ userSchema.pre('save', function (next) {// Can't use arrow functions
 });
 
 // Before findAndUpdate
-userSchema.pre('findAndUpdate', function (next) {// Can't use arrow functions
+userSchema.pre('findAndUpdate', function preUserFindAndUpdate(next) {// Can't use arrow functions
   const user = this;
 
   cleanData(user)
@@ -85,7 +85,7 @@ userSchema.pre('findAndUpdate', function (next) {// Can't use arrow functions
  * @param {string} testPass - String to be compared with the password
  * @return {Promise<boolean>}
  */
-userSchema.methods.comparePassword = function (testPass) {
+userSchema.methods.comparePassword = function userComparePassword(testPass) {
   const user = this;
 
   return bcrypt.compare(testPass, user.password);
@@ -94,7 +94,7 @@ userSchema.methods.comparePassword = function (testPass) {
 /**
  * Computed property to get the fullName
  */
-userSchema.virtual('fullName').get(function() {
+userSchema.virtual('fullName').get(function userFullName() {
   return `${this.firstname} ${this.lastname}`;
 });
 

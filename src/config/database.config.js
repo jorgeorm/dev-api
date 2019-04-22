@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const {
   DB_HOST,
+  DB_PORT,
   DB_NAME,
   DB_PASSWORD,
   DB_USER
@@ -19,7 +20,7 @@ const {
 exports.setupDatabase = () => {
   // DATABASE STUFF
 
-  const dbURI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`;
+  const dbURI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
   return mongoose.connect(dbURI, { useNewUrlParser: true })
     .then(() => {

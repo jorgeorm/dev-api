@@ -10,9 +10,9 @@ const boardsService = require('../../modules/board/board.service');
  * resourcePath: /api/state
  * description: Manages Card States
  */
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
   const { id, role } = req.userPayload;
-    
+
   boardsService.getBoards(id, role)
     .then((boards) => {
       res.json({ success: true, boards });

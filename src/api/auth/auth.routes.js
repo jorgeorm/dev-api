@@ -6,7 +6,7 @@ const {
 const router = express.Router();
 
 const authService = require('../../modules/auth/auth.service');
-const authMiddlewares = require('./auth.middlewares');
+const authMiddleware = require('./auth.middleware');
 
 const {
   AUTH_ERROR,
@@ -14,8 +14,8 @@ const {
 } = require('./auth.constants');
 
 const authFlow = [
-  authMiddlewares.jwt,
-  authMiddlewares.requireLogin
+  authMiddleware.jwtPayload,
+  authMiddleware.requireLogin
 ];
 
 router.post('/', (req, res) => {

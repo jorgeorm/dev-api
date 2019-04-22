@@ -10,18 +10,12 @@ const User = require('./user.model');
  * @param {String} cred.password - Password
  * @param {Express} app
  */
-exports.jwtLogin = async function ({email, password} = {}, app) {
-  const signConfg = {
+exports.jwtLogin = async function jwtLogin({email, password} = {}, app) {
+  const signConfig = {
     expiresIn: app.get('jwtExpiration')
   };
 
-  const user = await new Promise((resolve, reject) => {
-    User.findOne({email}, (err, user) => {
-      if(err) return reject(err);
-
-      resolve(user);
-    }).select('+password');
-  });
+  const user = await User.findOne({ email }).select('+password');
 
   if(!user) return undefined;
 
@@ -34,7 +28,14 @@ exports.jwtLogin = async function ({email, password} = {}, app) {
     role: user.role
   };
 
-  return jwt.sign(userPayload, app.get('jwtSecret'), signConfg);
+  const jwtToken = await new Promise((resolve, reject) => {
+    jwt.sign(userPayload, app.get('jwtSecret'), signConfig, (err, token) => {
+      if (err) reject(err);
+      else resolve(token);
+    });
+  });
+
+  return jwtToken;
 };
 
 /**
@@ -42,7 +43,7 @@ exports.jwtLogin = async function ({email, password} = {}, app) {
  * @param {Object} payload - User payload used to sign the token
  * @return {Promise<User>}
  */
-exports.currentUser = async function ({ id }, ) {
+exports.currentUser = async function currentUser({ id }, ) {
   const user = await new Promise((resolve, reject) => {
     User.findById(id, (err, user) => {
       if(err) return reject(err);
@@ -62,6 +63,6 @@ exports.currentUser = async function ({ id }, ) {
  * @param {String} creds.email
  * @param {String} creds.password
  */
-exports.signup = async function ({email, password}) {
+exports.signUp = async function signUp({email, password}) {
   throw new TypeError(`Sign Up not implemented ${{email, password}}`);
 };

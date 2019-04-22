@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const auth = require('./auth/auth.middlewares');
+const authMiddleware = require('./auth/auth.middleware');
 const authRoutes = require('./auth/auth.routes');
 const boardRoutes = require('./board/board.routes');
 const cardRoutes = require('./card/card.routes');
 const stateRoutes = require('./state/state.routes');
 
 const authFlow = [
-  auth.jwt,
-  auth.requireLogin
+  authMiddleware.jwtPayload,
+  authMiddleware.requireLogin
 ];
 
-router.use(function(req, res, next) {
+router.use(function corsMiddleware(req, res, next) {
   const method = req.method && req.method.toUpperCase && req.method.toUpperCase();
 
   res.header('Access-Control-Allow-Origin', '*');
