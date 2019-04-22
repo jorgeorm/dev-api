@@ -3,9 +3,11 @@
 mongo --eval "
     var MONGO_INITDB_ROOT_USERNAME = '$MONGO_INITDB_ROOT_USERNAME';
     var MONGO_INITDB_ROOT_PASSWORD='$MONGO_INITDB_ROOT_PASSWORD';
-    db = db.getSiblingDB('$MONGO_INITDB_DATABASE');
-    db.createUser({
+    var CURRENT_DATE=new Date();
+    var dbApp = db.getSiblingDB('$MONGO_INITDB_DATABASE');
+    dbApp.createUser({
         user: MONGO_INITDB_ROOT_USERNAME,
         pwd: MONGO_INITDB_ROOT_PASSWORD,
         roles:[ 'dbOwner' ]
-    });"
+    });
+    dbApp.seeds.save({ type: 'DB_CREATION', date: CURRENT_DATE });"
