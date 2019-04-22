@@ -2,17 +2,17 @@ version: "3.7"
 services:
   #Database
   db-mongo:
-    container_name: "dev-db"
+    container_name: ${DB_HOST}
     image: mongo
     environment:
-      MONGO_INITDB_ROOT_USERNAME: dev-api
-      MONGO_INITDB_ROOT_PASSWORD: topsecret
-      MONGO_INITDB_DATABASE: devApiLocal
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
     volumes:
       - db-data:/data/db:rw
       - ./init-mongo-db:/docker-entrypoint-initdb.d
     ports:
-      - "27017:27017"
+      - '${DB_PORT}:${DB_PORT}'
   # App
   app:
     container_name: "dev-api"
@@ -23,7 +23,7 @@ services:
       - .:/usr/src/app
       - node-modules:/usr/src/app/node_modules
     ports:
-      - "8080:8080"
+      - '${APP_PORT}:${APP_PORT}'
     depends_on:
       - db-mongo
 
