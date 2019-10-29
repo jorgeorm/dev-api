@@ -19,9 +19,9 @@ const authFlow = [
 ];
 
 router.post('/', (req, res) => {
-  const creds = req.body;
+  const credentials = req.body;
 
-  authService.jwtLogin(creds, req.app)
+  authService.jwtLogin(credentials, req.app)
     .then((token) => {
       if(!token) return res.status(UNAUTHORIZED)
         .json({success: false, message: AUTH_ERROR});
@@ -34,15 +34,15 @@ router.post('/', (req, res) => {
     });
 });
 
-router.post('/user', authFlow, (req, res) => {
-  authService.currentUser(req.userPayload)
-    .then((user) => {
-      res.json({success: true, user});
-    })
-    .catch(() => {
-      res.status(INTERNAL_SERVER_ERROR)
-        .json({success: false, message: AUTH_EXCEPTION});
-    });
+router.post('/user', authFlow, async (req, res) => {
+  const { userPayload } = req;
+
+  try {
+    const user = await authService.currentUser(userPayload);
+    res.json({ success: true, user });
+  } catch (error) {
+    res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: AUTH_EXCEPTION });
+  }
 });
 
 module.exports = router;

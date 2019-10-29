@@ -14,9 +14,9 @@ const {
 } = require('./cardTypes.constants');
 
 async function prepareData() {
-  const user = await User.findOne({email: BASE_ADMIN.email});
+  const user = await User.findOne({email: BASE_ADMIN.email}).exec();
   const boardObj = await boardData;
-  const board = await Board.findOne({ name: boardObj.name });
+  const board = await Board.findOne({ name: boardObj.name }).exec();
   const data = [];
   const cardTypes = [EPIC, STORY, TASK];
 

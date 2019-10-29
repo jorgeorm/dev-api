@@ -12,6 +12,15 @@ const {
 } = require('./config.constants');
 
 /**
+ * @constant {Object} MONGOOSE_CONFIG identifies values used by mongoose to create-run queries and objects.
+ * The following values are reported to fix warning about {@link https://github.com/Automattic/mongoose/issues/6890|deprecation}
+ */
+const MONGOOSE_CONFIG = {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+};
+
+/**
  * Setup the database connection
  * @param {object} dbCfg
  * @param {object} dbCfg.env - process.env
@@ -22,7 +31,7 @@ exports.setupDatabase = () => {
 
   const dbURI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
-  return mongoose.connect(dbURI, { useNewUrlParser: true })
+  return mongoose.connect(dbURI, MONGOOSE_CONFIG)
     .then(() => {
       console.log('=== DB_CONNECTION_STATUS: Connected');
       return Promise.resolve();

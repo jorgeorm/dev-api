@@ -13,14 +13,14 @@ async function prepareData() {
     createdAt: undefined,
     usedStates: [],
   };
-  const user = await User.findOne({email: userData.email});
+  const user = await User.findOne({email: userData.email}).exec();
   const statesToFind = await statesData;
   const statesQ = statesToFind.map((state) => {
     const { name, description } = state;
     return { name, description };
   });
 
-  const states = await State.find({ $or: [...statesQ] });
+  const states = await State.find({ $or: [...statesQ] }).exec();
 
   boardData.createdBy = user;
   boardData.createdAt = new Date();

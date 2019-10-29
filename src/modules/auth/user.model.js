@@ -21,11 +21,11 @@ const userSchema = new Schema({
       return emailReg.test(email);
     }, 'Please provide a valid email address'],
   },
-  firstname: {
+  firstName: {
     type: String,
     required: true
   },
-  lastname: {
+  lastName: {
     type: String,
     required: true
   },
@@ -88,6 +88,7 @@ userSchema.pre('findAndUpdate', function preUserFindAndUpdate(next) {// Can't us
 userSchema.methods.comparePassword = function userComparePassword(testPass) {
   const user = this;
 
+  // bcrypt.compare returns Promise
   return bcrypt.compare(testPass, user.password);
 };
 
@@ -95,7 +96,7 @@ userSchema.methods.comparePassword = function userComparePassword(testPass) {
  * Computed property to get the fullName
  */
 userSchema.virtual('fullName').get(function userFullName() {
-  return `${this.firstname} ${this.lastname}`;
+  return `${this.firstName} ${this.lastName}`;
 });
 
 module.exports = mongoose.model('User', userSchema);

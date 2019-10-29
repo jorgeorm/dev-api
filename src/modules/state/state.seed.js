@@ -23,7 +23,7 @@ async function prepareData () {
     description: 'State when something is completed'
   }];
 
-  const user = await User.findOne({email: userData.email});
+  const user = await User.findOne({email: userData.email}).exec();
 
   return defaultStates.map((state) => {
     state.createdBy = user;

@@ -32,7 +32,6 @@ Once you've completed the installation follow instructions bellow:
 - [x] Generate a copy of the [.env.sample](./.env.sample) file named _.env_.
 - [x] Define variables in the file with proper values.
   - _NOTE:_ Do not use estrange characters in DB_NAME env var, use camel-case.
-- [x] Define variable DB*HOST with *'db-mongo:27017'\_.
 - [x] Run **`docker-compose up`**
 
 _And voila, thats all!!!_

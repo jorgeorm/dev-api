@@ -14,8 +14,9 @@ exports.jwtLogin = async function jwtLogin({email, password} = {}, app) {
   const signConfig = {
     expiresIn: app.get('jwtExpiration')
   };
+  const jwtSecret = app.get('jwtSecret');
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select('+password').exec();
 
   if(!user) return undefined;
 
@@ -28,14 +29,8 @@ exports.jwtLogin = async function jwtLogin({email, password} = {}, app) {
     role: user.role
   };
 
-  const jwtToken = await new Promise((resolve, reject) => {
-    jwt.sign(userPayload, app.get('jwtSecret'), signConfig, (err, token) => {
-      if (err) reject(err);
-      else resolve(token);
-    });
-  });
-
-  return jwtToken;
+  // Using synchronous method since no perf. value: @see https://github.com/auth0/node-jsonwebtoken/issues/566
+  return jwt.sign(userPayload, jwtSecret, signConfig);
 };
 
 /**
@@ -43,18 +38,8 @@ exports.jwtLogin = async function jwtLogin({email, password} = {}, app) {
  * @param {Object} payload - User payload used to sign the token
  * @return {Promise<User>}
  */
-exports.currentUser = async function currentUser({ id }, ) {
-  const user = await new Promise((resolve, reject) => {
-    User.findById(id, (err, user) => {
-      if(err) return reject(err);
-
-      resolve(user);
-    });
-  });
-
-  if(!user) return undefined;
-
-  return user;
+exports.currentUser = async function currentUser({ id } = {}) {
+  return User.findById(id).exec();
 };
 
 /**
