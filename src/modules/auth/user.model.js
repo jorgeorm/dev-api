@@ -81,6 +81,7 @@ userSchema.pre('findAndUpdate', function preUserFindAndUpdate(next) {// Can't us
 });
 
 /**
+ * @memberOf User#
  * Compares password in user model
  * @param {string} testPass - String to be compared with the password
  * @return {Promise<boolean>}
@@ -93,10 +94,17 @@ userSchema.methods.comparePassword = function userComparePassword(testPass) {
 };
 
 /**
+ * @memberOf User
  * Computed property to get the fullName
  */
 userSchema.virtual('fullName').get(function userFullName() {
   return `${this.firstName} ${this.lastName}`;
 });
 
-module.exports = mongoose.model('User', userSchema);
+/**
+ * @class User
+ * @type {Model<User>}
+ */
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;

@@ -10,4 +10,5 @@ mongo --eval "
         pwd: MONGO_INITDB_ROOT_PASSWORD,
         roles:[ 'dbOwner' ]
     });
-    dbApp.seeds.save({ type: 'DB_CREATION', date: CURRENT_DATE });"
+    dbApp.seeds.save({ type: 'DB_CREATION', date: CURRENT_DATE });
+"

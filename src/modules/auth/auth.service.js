@@ -9,6 +9,7 @@ const User = require('./user.model');
  * @param {String} cred.email - Email
  * @param {String} cred.password - Password
  * @param {Express} app
+ * @return {Promise<undefined|string>}
  */
 exports.jwtLogin = async function jwtLogin({email, password} = {}, app) {
   const signConfig = {
@@ -26,17 +27,17 @@ exports.jwtLogin = async function jwtLogin({email, password} = {}, app) {
 
   const userPayload = {
     id: user._id,
-    role: user.role
+    role: user.role,
   };
-
+  
   // Using synchronous method since no perf. value: @see https://github.com/auth0/node-jsonwebtoken/issues/566
-  return jwt.sign(userPayload, jwtSecret, signConfig);
+  return jwt.sign(userPayload, jwtSecret, signConfig, undefined);
 };
 
 /**
  * Obtains user's data from an a Authorization token
  * @param {Object} payload - User payload used to sign the token
- * @return {Promise<User>}
+ * @return {Promise<Model<User>>}
  */
 exports.currentUser = async function currentUser({ id } = {}) {
   return User.findById(id).exec();

@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 services:
   #Database
   db-mongo:
@@ -16,6 +16,14 @@ services:
   # App
   app:
     container_name: "dev-api"
+    environment:
+      - APP_PORT=${APP_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - WAIT_HOSTS=${DB_HOST}:${DB_PORT}
+      - WAIT_HOSTS_TIMEOUT=${DB_WAIT_TIMEOUT}
+      - WAIT_SLEEP_INTERVAL=${DB_WAIT_SLEEP}
+      - WAIT_HOST_CONNECT_TIMEOUT=${DB_CONNECT_TIMEOUT}
     restart: always
     build: .
     # Workaround for having live app code and node-modules for alpine intact
@@ -29,6 +37,6 @@ services:
 
 volumes:
   # Will persist database in container
-  db-data:
+  db-data: {}
   # Will persist and give priority to alpine node_modules install instead of local node_modules
-  node-modules:
+  node-modules: {}

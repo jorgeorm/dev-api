@@ -23,12 +23,17 @@ router.post('/', (req, res) => {
 
   authService.jwtLogin(credentials, req.app)
     .then((token) => {
-      if(!token) return res.status(UNAUTHORIZED)
-        .json({success: false, message: AUTH_ERROR});
+      if(!token) return res.status(UNAUTHORIZED).json({
+        success: false,
+        message: AUTH_ERROR
+      });
 
-      res.json({success: true, token: token});
+      res.json({
+        success: true,
+        token: token
+      });
     })
-    .catch(() => {
+    .catch((err) => {
       res.status(INTERNAL_SERVER_ERROR)
         .json({success: false, message: AUTH_EXCEPTION});
     });

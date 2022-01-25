@@ -34,5 +34,9 @@ router.use('/card', authFlow, cardRoutes);
 router.use('/state', authFlow, stateRoutes);
 router.use('/board', authFlow, boardRoutes);
 // router.use('/team', authFlow, notImplemented);
+router.use('/health', function healthEndpoint(req, res) {
+  res.statusCode = 200;
+  return res.end();
+});
 
 module.exports = router;

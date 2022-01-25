@@ -21,9 +21,9 @@ exports.loadFiles = function loadFiles(globExp) {
  */
 exports.seed = function seed(files) {
   /**
-   * @type {Promise[]}
+   * @type {{data: *, collection: *}[]}
    */
-  const seedPromises = files.map(async(seedFile) => {
+  const seedPromises = files.map( async (seedFile) => {
     const { Model, data } = require(seedFile);
     const collection = Model.collection.collectionName;
     const insertData = data instanceof Promise ? await data : data;

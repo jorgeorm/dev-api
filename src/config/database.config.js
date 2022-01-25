@@ -22,9 +22,7 @@ const MONGOOSE_CONFIG = {
 
 /**
  * Setup the database connection
- * @param {object} dbCfg
- * @param {object} dbCfg.env - process.env
- * @param {express} dbCfg.app - app
+ * @return {Promise<Mongoose|void>}
  */
 exports.setupDatabase = () => {
   // DATABASE STUFF
@@ -32,9 +30,9 @@ exports.setupDatabase = () => {
   const dbURI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
   return mongoose.connect(dbURI, MONGOOSE_CONFIG)
-    .then(() => {
+    .then((mongoose) => {
       console.log('=== DB_CONNECTION_STATUS: Connected');
-      return Promise.resolve();
+      return Promise.resolve(mongoose);
     })
     .catch((err) => {
       console.error('=== DB_CONNECTION_STATUS: Error');

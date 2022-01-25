@@ -13,11 +13,13 @@ dbConfig.setupDatabase(process)
   })
   .then((files) => {
     console.log('--- SEEDING PROCESS START');
+    console.log(files);
     return seedHelper.seed(files);
   })
   .then((report) => {
     report.forEach((entry) => {
-      const logger = entry.hasOwnProperty('collection') ? console.log : console.error;
+      const { collection } = entry;
+      const logger = collection ? console.log : console.error;
 
       logger(JSON.stringify(entry));
     });

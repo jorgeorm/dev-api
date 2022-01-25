@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const SchemaTypes = mongoose.SchemaTypes;
 /**
- * Stampable decorator
+ * Stamp-able decorator
  * adds timestamp to a schema object
  * @param {object} target
  */
