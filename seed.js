@@ -18,18 +18,10 @@ dbConfig.setupDatabase(process)
 
       return aName > bName ? 1 : -1;
     });
-    console.log('--- SEEDING PROCESS START');
-    console.log(sortedFiles);
+    console.log('--- SEEDING PROCESS START: ', sortedFiles.length, ' files found');
     return seedHelper.seed(sortedFiles);
   })
-  .then((report) => {
-    report.forEach((entry) => {
-      const { collection } = entry;
-      const logger = collection ? console.log : console.error;
-
-      logger(JSON.stringify(entry));
-    });
-
+  .then(() => {
     console.log('--- SEEDING PROCESS END');
     process.exit(0);
   })
