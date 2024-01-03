@@ -3,7 +3,7 @@
 const State = require('./state.model');
 
 const User = require('../auth/user.model');
-const userData = require('../auth/user.seed').data;
+const userData = require('../auth/1.user.seed').data;
 
 async function prepareData () {
   const defaultStates = [{

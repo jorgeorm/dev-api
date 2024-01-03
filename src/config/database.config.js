@@ -18,6 +18,7 @@ const {
 const MONGOOSE_CONFIG = {
   useNewUrlParser: true,
   useCreateIndex: true,
+  useUnifiedTopology: true,
 };
 
 /**

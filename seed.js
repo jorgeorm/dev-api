@@ -12,9 +12,15 @@ dbConfig.setupDatabase(process)
     return seedHelper.loadFiles(`${__dirname}/src/**/${name}.seed.js`);
   })
   .then((files) => {
+    const sortedFiles = files.sort((a, b) => {
+      const aName = a.split('/').pop();
+      const bName = b.split('/').pop();
+
+      return aName > bName ? 1 : -1;
+    });
     console.log('--- SEEDING PROCESS START');
-    console.log(files);
-    return seedHelper.seed(files);
+    console.log(sortedFiles);
+    return seedHelper.seed(sortedFiles);
   })
   .then((report) => {
     report.forEach((entry) => {

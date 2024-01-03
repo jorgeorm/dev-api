@@ -2,8 +2,8 @@ const Board = require('./board.model');
 const State = require('../state/state.model');
 const User = require('../auth/user.model');
 
-const userData = require('../auth/user.seed').data;
-const statesData = require('../state/state.seed').data;
+const userData = require('../auth/1.user.seed').data;
+const statesData = require('../state/2.state.seed').data;
 
 async function prepareData() {
   const boardData = {

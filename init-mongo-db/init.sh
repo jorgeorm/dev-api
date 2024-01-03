@@ -1,6 +1,6 @@
 #!/bin/sh
 # The following script switch the database to the one used by the app and set the permissions so that the app can connect
-mongo --eval "
+mongosh --quiet --eval "
     var MONGO_INITDB_ROOT_USERNAME = '$MONGO_INITDB_ROOT_USERNAME';
     var MONGO_INITDB_ROOT_PASSWORD='$MONGO_INITDB_ROOT_PASSWORD';
     var CURRENT_DATE=new Date();
@@ -10,5 +10,5 @@ mongo --eval "
         pwd: MONGO_INITDB_ROOT_PASSWORD,
         roles:[ 'dbOwner' ]
     });
-    dbApp.seeds.save({ type: 'DB_CREATION', date: CURRENT_DATE });
+    dbApp.seeds.insertOne({ type: 'DB_CREATION', date: CURRENT_DATE });
 "

@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:18-alpine
 
 # docker-compose-wait tool
 ENV WAIT_VERSION 2.7.2

@@ -5,8 +5,8 @@ const Board = require('../board/board.model');
 const Card = require('./card.model');
 const User = require('../auth/user.model');
 
-const boardData = require('../board/board.seed').data;
-const BASE_ADMIN = require('../auth/user.seed').data;
+const boardData = require('../board/3.board.seed').data;
+const BASE_ADMIN = require('../auth/1.user.seed').data;
 const {
   EPIC,
   STORY,
