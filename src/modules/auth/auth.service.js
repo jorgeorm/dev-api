@@ -37,6 +37,7 @@ exports.jwtLogin = async function jwtLogin({ email, password } = {}, app) {
 /**
  * Obtains user's data from an a Authorization token
  * @param {Object} payload - User payload used to sign the token
+ * @param {String} payload.id - User's id
  * @return {Promise<Model<User>>}
  */
 exports.currentUser = async function currentUser({ id } = {}) {
