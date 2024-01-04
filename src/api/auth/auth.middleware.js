@@ -9,9 +9,9 @@ const errorMap = {
 
 /**
  * Extracts payload fron JWT and adds it to the request object.
- * @param {*} req
- * @param {*} res
- * @param {*} next
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.Handler} next
  */
 exports.jwtPayload = function jwtPayload(req, res, next) {
   const hasToken =
@@ -43,9 +43,9 @@ exports.jwtPayload = function jwtPayload(req, res, next) {
 
 /**
  * Checks if a user
- * @param {*} req
- * @param {*} res
- * @param {*} next
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.Handler} next
  */
 exports.requireLogin = function requireLogin(req, res, next) {
   if (!req.userPayload)

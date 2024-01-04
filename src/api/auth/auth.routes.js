@@ -28,21 +28,36 @@ const authFlow = [authMiddleware.jwtPayload, authMiddleware.requireLogin];
  *       example:
  *         username: jorgeorm
  *         password: superSecret123
- *     LoginSuccess:
+ *     BaseResponseSuccess:
  *       type: object
  *       required:
- *         - success
- *         - token
+ *         - result
  *       properties:
- *         success:
- *           type: boolean
- *           description: The login success status.
- *         token:
- *           type: string
- *           description: The JWT token.
+ *         result:
+ *           type: any
+ *           description: Result of the operation.
  *       example:
- *         success: true
- *         token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *         result: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *     BaseResponseError:
+ *       type: object
+ *       required:
+ *         - message
+ *       properties:
+ *         result:
+ *           type: string
+ *           description: Error message.
+ *       example:
+ *         message: Rety later / contact support
+ *     Response:
+ *       type: object
+ *       required:
+ *         - result
+ *       properties:
+ *         result:
+ *           type: any
+ *           description: Result of the operation.
+ *       example:
+ *         result: {...}
  *     UserRequest:
  *       type: object
  *       required:
@@ -98,11 +113,26 @@ const authFlow = [authMiddleware.jwtPayload, authMiddleware.requireLogin];
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/LoginSuccess'
+ *               $ref: '#/components/schemas/BaseResponseSuccess'
+ *               example:
+ *                 result: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BaseResponseError'
+ *               example:
+ *                 message: Authentication error. Wrong email/password.
  *       500:
  *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BaseResponseError'
+ *               example:
+ *                 message: Unknown error
  *
  */
 router.post("/", (req, res) => {
@@ -113,19 +143,15 @@ router.post("/", (req, res) => {
     .then((token) => {
       if (!token)
         return res.status(UNAUTHORIZED).json({
-          success: false,
           message: AUTH_ERROR,
         });
 
       res.json({
-        success: true,
-        token: token,
+        result: token,
       });
     })
     .catch(() => {
-      res
-        .status(INTERNAL_SERVER_ERROR)
-        .json({ success: false, message: AUTH_EXCEPTION });
+      res.status(INTERNAL_SERVER_ERROR).json({ message: AUTH_EXCEPTION });
     });
 });
 
@@ -136,7 +162,7 @@ router.post("/", (req, res) => {
  *   description: The authentication managing API
  * /auth/user:
  *   post:
- *     summary: Login to the application
+ *     summary: Gets current loged in user based on credentials
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -162,11 +188,9 @@ router.post("/user", authFlow, async (req, res) => {
 
   try {
     const user = await authService.currentUser(userPayload);
-    res.json({ success: true, user });
+    res.json({ result: user });
   } catch (error) {
-    res
-      .status(INTERNAL_SERVER_ERROR)
-      .json({ success: false, message: AUTH_EXCEPTION });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: AUTH_EXCEPTION });
   }
 });
 
