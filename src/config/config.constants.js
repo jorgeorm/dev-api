@@ -32,7 +32,7 @@ const SWAGGER_OPTIONS = {
     },
     servers: [
       {
-        url: "http://localhost:8080",
+        url: "http://localhost:8080/api",
       },
     ],
   },
