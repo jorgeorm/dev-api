@@ -1,3 +1,3 @@
-exports.EPIC = 'Epic';
-exports.STORY = 'Story';
-exports.TASK = 'Task';
+exports.EPIC = "Epic";
+exports.STORY = "Story";
+exports.TASK = "Task";

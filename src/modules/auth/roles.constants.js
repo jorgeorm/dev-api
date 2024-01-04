@@ -1,3 +1,3 @@
-exports.ADMIN = 'admin';
-exports.MANAGER = 'manager';
-exports.USER = 'user';
+exports.ADMIN = "admin";
+exports.MANAGER = "manager";
+exports.USER = "user";

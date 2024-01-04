@@ -12,7 +12,7 @@ services:
       - db-data:/data/db:rw
       - ./init-mongo-db:/docker-entrypoint-initdb.d
     ports:
-      - '${DB_PORT}:${DB_PORT}'
+      - "${DB_PORT}:${DB_PORT}"
   # App
   app:
     container_name: "dev-api"
@@ -31,7 +31,7 @@ services:
       - .:/usr/src/app
       - node-modules:/usr/src/app/node_modules
     ports:
-      - '${APP_PORT}:${APP_PORT}'
+      - "${APP_PORT}:${APP_PORT}"
     depends_on:
       - db-mongo
 

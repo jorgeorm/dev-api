@@ -1,19 +1,19 @@
-const Board = require('./board.model');
-const State = require('../state/state.model');
-const User = require('../auth/user.model');
+const Board = require("./board.model");
+const State = require("../state/state.model");
+const User = require("../auth/user.model");
 
-const userData = require('../auth/1.user.seed').data;
-const statesData = require('../state/2.state.seed').data;
+const userData = require("../auth/1.user.seed").data;
+const statesData = require("../state/2.state.seed").data;
 
 async function prepareData() {
   const boardData = {
-    name: 'Sample board',
+    name: "Sample board",
     transitions: [],
     createdBy: undefined,
     createdAt: undefined,
     usedStates: [],
   };
-  const user = await User.findOne({email: userData.email}).exec();
+  const user = await User.findOne({ email: userData.email }).exec();
   const statesToFind = await statesData;
   const statesQ = statesToFind.map((state) => {
     const { name, description } = state;
@@ -29,13 +29,13 @@ async function prepareData() {
     if (index > 0) {
       boardData.transitions.push({
         from: state,
-        to: states[index - 1]
+        to: states[index - 1],
       });
     }
-    if (index < (states.length - 1)) {
+    if (index < states.length - 1) {
       boardData.transitions.push({
         from: state,
-        to: states[index + 1]
+        to: states[index + 1],
       });
     }
 
@@ -47,5 +47,5 @@ async function prepareData() {
 
 module.exports = {
   Model: Board,
-  data: prepareData()
+  data: prepareData(),
 };

@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const { Revisionable } = require('../shared/decorators');
+const { Revisionable } = require("../shared/decorators");
 
 const stateSchema = Revisionable({
   name: {
@@ -12,4 +12,4 @@ const stateSchema = Revisionable({
   description: String,
 });
 
-module.exports = mongoose.model('State', new Schema(stateSchema));
+module.exports = mongoose.model("State", new Schema(stateSchema));

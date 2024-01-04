@@ -1,29 +1,31 @@
-'use strict';
+"use strict";
 
-const State = require('./state.model');
+const State = require("./state.model");
 
-const User = require('../auth/user.model');
-const userData = require('../auth/1.user.seed').data;
+const User = require("../auth/user.model");
+const userData = require("../auth/1.user.seed").data;
 
-async function prepareData () {
-  const defaultStates = [{
-    name: 'backlog',
-    description: 'Represents the backlog'
-  },
-  {
-    name: 'to do',
-    description: 'Something is going to be handled in a sprint'
-  },
-  {
-    name: 'in progress',
-    description: 'State when something is being done'
-  },
-  {
-    name: 'done',
-    description: 'State when something is completed'
-  }];
+async function prepareData() {
+  const defaultStates = [
+    {
+      name: "backlog",
+      description: "Represents the backlog",
+    },
+    {
+      name: "to do",
+      description: "Something is going to be handled in a sprint",
+    },
+    {
+      name: "in progress",
+      description: "State when something is being done",
+    },
+    {
+      name: "done",
+      description: "State when something is completed",
+    },
+  ];
 
-  const user = await User.findOne({email: userData.email}).exec();
+  const user = await User.findOne({ email: userData.email }).exec();
 
   return defaultStates.map((state) => {
     state.createdBy = user;
@@ -35,5 +37,5 @@ async function prepareData () {
 
 module.exports = {
   Model: State,
-  data: prepareData()
+  data: prepareData(),
 };

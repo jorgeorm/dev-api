@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const SchemaTypes = mongoose.SchemaTypes;
 /**
  * Stamp-able decorator
@@ -12,16 +12,16 @@ module.exports.Revisionable = function revisionableDecorator(target) {
   };
   target.createdBy = {
     type: SchemaTypes.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   };
   target.updatedBy = {
     type: SchemaTypes.ObjectId,
-    ref: 'User',
+    ref: "User",
   };
   target.removedBy = {
     type: SchemaTypes.ObjectId,
-    ref: 'User',
+    ref: "User",
   };
 
   return target;

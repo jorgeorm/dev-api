@@ -1,13 +1,13 @@
-const glob = require('glob');
-const mongoose = require('mongoose');
-const path = require('path');
+const glob = require("glob");
+const mongoose = require("mongoose");
+const path = require("path");
 
 const seedSchema = new mongoose.Schema({
   filename: String,
   type: String,
   date: mongoose.SchemaTypes.Date,
 });
-const Seed = mongoose.model('Seed', seedSchema);
+const Seed = mongoose.model("Seed", seedSchema);
 exports.Seed = Seed;
 
 /**
@@ -18,13 +18,12 @@ exports.Seed = Seed;
 exports.loadFiles = function loadFiles(globExp) {
   return new Promise((resolve, reject) => {
     glob(globExp, (err, files) => {
-      if(err) return reject(err);
+      if (err) return reject(err);
 
       resolve(files);
     });
   });
 };
-
 
 /**
  * Executes a seed operation by inserting data into a specified model.
@@ -33,24 +32,25 @@ exports.loadFiles = function loadFiles(globExp) {
  * @param {Promise|Object} options.data - The data to be inserted. Can be a Promise or a plain object.
  * @returns {Object} - The collection name and the inserted data.
  */
-async function executeSeed({Model, data}) {
-  if (!Model || !data) throw new Error('Model and data are required for seed operation');
+async function executeSeed({ Model, data }) {
+  if (!Model || !data)
+    throw new Error("Model and data are required for seed operation");
 
   const collection = Model.collection.collectionName;
   const insertData = data instanceof Promise ? await data : data;
-  const seedReport = ['=== SEED: ', collection, ' STARTED, '];
+  const seedReport = ["=== SEED: ", collection, " STARTED, "];
 
   try {
     const result = await Model.create(insertData);
-    seedReport.push('SUCCESS: ', result.length ?? 1, ' entries ===');
+    seedReport.push("SUCCESS: ", result.length ?? 1, " entries ===");
   } catch (e) {
-    seedReport.push('=== ERROR: ', e, ' ===');
+    seedReport.push("=== ERROR: ", e, " ===");
     throw e;
   } finally {
-    console.log(seedReport.join(''));
+    console.log(seedReport.join(""));
   }
 
-  return {collection, data: insertData};
+  return { collection, data: insertData };
 }
 
 /**
@@ -63,19 +63,19 @@ exports.seed = function seed(files) {
 
     return chain.then(async (chainedResult) => {
       const filename = path.basename(file);
-      const existingSeed = await Seed.findOne({ filename, type: 'file' });
+      const existingSeed = await Seed.findOne({ filename, type: "file" });
 
       if (existingSeed) {
-        console.log('=== SEED: ', filename, ' SKIPPED ===');
+        console.log("=== SEED: ", filename, " SKIPPED ===");
         return chainedResult;
       }
 
       const seederConfig = require(file);
-      
+
       const result = await executeSeed(seederConfig);
-      await Seed.create({ filename, date: new Date() });
-      
-      if (chainedResult)  {
+      await Seed.create({ filename, type: "file", date: new Date() });
+
+      if (chainedResult) {
         return [...chainedResult, result];
       }
 

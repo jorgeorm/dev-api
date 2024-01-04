@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 /*eslint no-console: "off"*/
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const {
   DB_HOST,
   DB_PORT,
   DB_NAME,
   DB_PASSWORD,
-  DB_USER
-} = require('./config.constants');
+  DB_USER,
+} = require("./config.constants");
 
 /**
  * @constant {Object} MONGOOSE_CONFIG identifies values used by mongoose to create-run queries and objects.
@@ -30,14 +30,15 @@ exports.setupDatabase = () => {
 
   const dbURI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
-  return mongoose.connect(dbURI, MONGOOSE_CONFIG)
+  return mongoose
+    .connect(dbURI, MONGOOSE_CONFIG)
     .then((mongoose) => {
-      console.log('=== DB_CONNECTION_STATUS: Connected');
+      console.log("=== DB_CONNECTION_STATUS: Connected");
       return Promise.resolve(mongoose);
     })
     .catch((err) => {
-      console.error('=== DB_CONNECTION_STATUS: Error');
-      console.error('=== DB_ERROR: ', err);
+      console.error("=== DB_CONNECTION_STATUS: Error");
+      console.error("=== DB_ERROR: ", err);
       return Promise.reject(err);
     });
 };
