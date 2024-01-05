@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { UNAUTHORIZED } = require("http-status-codes");
 
-const { AUTH_FAILED } = require("./auth.constants");
+const AUTH_FAILED = "Authentication failed.";
 
 const errorMap = {
   TokenExpiredError: { code: UNAUTHORIZED, message: AUTH_FAILED },
@@ -49,3 +49,5 @@ exports.requireLogin = function requireLogin(req, res, next) {
 
   next();
 };
+
+exports.AUTH_FAILED = AUTH_FAILED;

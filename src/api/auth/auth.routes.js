@@ -13,17 +13,17 @@ const { AUTH_ERROR, AUTH_FLOW } = require("./auth.constants");
  *     LoginCredentials:
  *       type: object
  *       required:
- *         - username
+ *         - email
  *         - password
  *       properties:
- *         username:
+ *         email:
  *           type: string
- *           description: The user's username.
+ *           description: The user's email.
  *         password:
  *           type: string
  *           description: The user's password.
  *       example:
- *         username: jorgeorm
+ *         email: jorgeorm@gmail.com
  *         password: superSecret123
  *     BaseResponseSuccess:
  *       type: object
@@ -112,19 +112,24 @@ const { AUTH_ERROR, AUTH_FLOW } = require("./auth.constants");
  *                 message: Unknown error
  *
  */
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   const credentials = req.body;
-  const token = await auth.jwtLogin(credentials, req.app);
 
-  if (!token) {
-    return res.status(UNAUTHORIZED).json({
-      message: AUTH_ERROR,
+  try {
+    const token = await auth.jwtLogin(credentials, req.app);
+
+    if (!token) {
+      return res.status(UNAUTHORIZED).json({
+        message: AUTH_ERROR,
+      });
+    }
+
+    res.json({
+      result: token,
     });
+  } catch (e) {
+    next(e);
   }
-
-  res.json({
-    result: token,
-  });
 });
 
 /**

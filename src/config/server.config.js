@@ -7,6 +7,8 @@ const api = require("../api");
 const authConfig = require("./auth.config");
 const dbConfig = require("./database.config");
 const configConstants = require("./config.constants");
+const { INTERNAL_SERVER_ERROR } = require("http-status-codes");
+const UNKOWN_ERROR = "Unknown error";
 
 /**
  * Will contain server related vars
@@ -38,7 +40,14 @@ exports.bootApp = () => {
   app.use(bodyParser.json());
 
   // Loads api routes
-  app.use("/api", api);
+  app.use("/api", api, (err, req, res, next) => {
+    if (req.is("application/json")) {
+      res.status(INTERNAL_SERVER_ERROR).send({ messge: UNKOWN_ERROR });
+      return;
+    }
+
+    next(err);
+  });
 
   // stores the server port
   SERVER.port = process.env.PORT || 8080; // set a default port
