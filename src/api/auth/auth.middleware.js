@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 const { UNAUTHORIZED } = require("http-status-codes");
 
-const { AUTH_EXCEPTION, AUTH_EXPIRED } = require("./auth.constants");
+const { AUTH_FAILED } = require("./auth.constants");
 
 const errorMap = {
-  TokenExpiredError: { code: UNAUTHORIZED, message: AUTH_EXPIRED },
+  TokenExpiredError: { code: UNAUTHORIZED, message: AUTH_FAILED },
 };
 
 /**
@@ -14,28 +14,24 @@ const errorMap = {
  * @param {Express.Handler} next
  */
 exports.jwtPayload = function jwtPayload(req, res, next) {
-  const hasToken =
-    req.headers &&
-    req.headers.authorization &&
-    req.headers.authorization.split(" ")[0] === "Bearer";
+  const [bearer, token] =
+    (req.headers &&
+      req.headers.authorization &&
+      req.headers.authorization.split(" ")) ||
+    [];
 
-  if (!hasToken) return next();
+  if (!bearer || !token) return next();
 
-  const token = req.headers.authorization.split(" ")[1];
   try {
     req.userPayload = jwt.verify(token, req.app.get("jwtSecret"));
   } catch (err) {
     const error = errorMap[err.name];
 
     if (error) {
-      return res
-        .status(error.code)
-        .json({ success: false, message: error.message });
+      return res.status(error.code).json({ message: error.message });
     }
 
-    return res
-      .status(UNAUTHORIZED)
-      .json({ success: false, message: AUTH_EXCEPTION });
+    next(err);
   }
 
   next();

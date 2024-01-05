@@ -1,13 +1,10 @@
 const express = require("express");
-const { UNAUTHORIZED, INTERNAL_SERVER_ERROR } = require("http-status-codes");
+const { UNAUTHORIZED } = require("http-status-codes");
 const router = express.Router();
 
-const authService = require("../../modules/auth/auth.service");
-const authMiddleware = require("./auth.middleware");
+const auth = require("../../modules/auth/auth.lib");
 
-const { AUTH_ERROR, AUTH_EXCEPTION } = require("./auth.constants");
-
-const authFlow = [authMiddleware.jwtPayload, authMiddleware.requireLogin];
+const { AUTH_ERROR, AUTH_FLOW } = require("./auth.constants");
 
 /**
  * @swagger
@@ -48,26 +45,6 @@ const authFlow = [authMiddleware.jwtPayload, authMiddleware.requireLogin];
  *           description: Error message.
  *       example:
  *         message: Rety later / contact support
- *     Response:
- *       type: object
- *       required:
- *         - result
- *       properties:
- *         result:
- *           type: any
- *           description: Result of the operation.
- *       example:
- *         result: {...}
- *     UserRequest:
- *       type: object
- *       required:
- *         - id
- *       properties:
- *         id:
- *           type: string
- *           description: Current user id.
- *       example:
- *         id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     CurrentUser:
  *       type: object
  *       properties:
@@ -124,7 +101,7 @@ const authFlow = [authMiddleware.jwtPayload, authMiddleware.requireLogin];
  *             schema:
  *               $ref: '#/components/schemas/BaseResponseError'
  *               example:
- *                 message: Authentication error. Wrong email/password.
+ *                 message: Login is required.
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -135,24 +112,19 @@ const authFlow = [authMiddleware.jwtPayload, authMiddleware.requireLogin];
  *                 message: Unknown error
  *
  */
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const credentials = req.body;
+  const token = await auth.jwtLogin(credentials, req.app);
 
-  authService
-    .jwtLogin(credentials, req.app)
-    .then((token) => {
-      if (!token)
-        return res.status(UNAUTHORIZED).json({
-          message: AUTH_ERROR,
-        });
-
-      res.json({
-        result: token,
-      });
-    })
-    .catch(() => {
-      res.status(INTERNAL_SERVER_ERROR).json({ message: AUTH_EXCEPTION });
+  if (!token) {
+    return res.status(UNAUTHORIZED).json({
+      message: AUTH_ERROR,
     });
+  }
+
+  res.json({
+    result: token,
+  });
 });
 
 /**
@@ -166,32 +138,50 @@ router.post("/", (req, res) => {
  *     tags: [Auth]
  *     requestBody:
  *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserRequest'
  *     responses:
  *       200:
  *         description: Current user data
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/CurrentUser'
+ *               type: object
+ *               allOf:
+ *                 - $ref: '#/components/schemas/BaseResponseSuccess'
+ *                 - type: object
+ *                   required:
+ *                     - result
+ *                   properties:
+ *                     result:
+ *                       $ref: '#/components/schemas/CurrentUser'
+ *                   example:
+ *                     result:
+ *                       email: jorgeorm@gmail.com
+ *                       firstName: Jorge
+ *                       lastName: Ordonez
+ *                       role: admin
+ *
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BaseResponseError'
+ *               example:
+ *                 message: Unknown error
  *       500:
  *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BaseResponseError'
+ *               example:
+ *                 message: Unknown error
  *
  */
-router.post("/user", authFlow, async (req, res) => {
+router.post("/user", AUTH_FLOW, async (req, res) => {
   const { userPayload } = req;
-
-  try {
-    const user = await authService.currentUser(userPayload);
-    res.json({ result: user });
-  } catch (error) {
-    res.status(INTERNAL_SERVER_ERROR).json({ message: AUTH_EXCEPTION });
-  }
+  const user = await auth.currentUser(userPayload);
+  res.json({ result: user });
 });
 
 module.exports = router;

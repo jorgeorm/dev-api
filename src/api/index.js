@@ -1,14 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const authMiddleware = require("./auth/auth.middleware");
 const authRoutes = require("./auth/auth.routes");
 const boardRoutes = require("./board/board.routes");
 const cardRoutes = require("./card/card.routes");
 const stateRoutes = require("./state/state.routes");
 const { notImplemented } = require("./shared/utils.middlewares");
-
-const authFlow = [authMiddleware.jwtPayload, authMiddleware.requireLogin];
+const { AUTH_FLOW } = require("./auth/auth.constants");
 
 router.use(function corsMiddleware(req, res, next) {
   const method =
@@ -17,7 +15,7 @@ router.use(function corsMiddleware(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
 
   if (method === "OPTIONS") {
@@ -32,10 +30,10 @@ router.use(function corsMiddleware(req, res, next) {
 });
 
 router.use("/auth", authRoutes);
-router.use("/card", authFlow, cardRoutes);
-router.use("/state", authFlow, stateRoutes);
-router.use("/board", authFlow, boardRoutes);
-router.use("/team", authFlow, notImplemented);
+router.use("/card", AUTH_FLOW, cardRoutes);
+router.use("/state", AUTH_FLOW, stateRoutes);
+router.use("/board", AUTH_FLOW, boardRoutes);
+router.use("/team", AUTH_FLOW, notImplemented);
 router.use("/health", function healthEndpoint(req, res) {
   res.statusCode = 200;
   return res.end();
